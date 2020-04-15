@@ -68,3 +68,6 @@ echo $RECCMD | at $STARTTIME $DATE
 # write log file
 echo $RECCMD >> $SAVETO/log.txt
 #echo $STOPCMD >> $SAVETO/log.txt
+
+#crontab entry to start the shell script
+#0 3 * * * /home/planet-expo/radio_ripper.sh  > /home/planet-expo/radio_ripper.log 2>&1
