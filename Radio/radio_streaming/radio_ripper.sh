@@ -9,17 +9,17 @@ SAVETO=~/radio_files
 FORMAT=wav
 
 # set recorder "vlc" "streamripper" "mplayer" or comment out to prompt user for selection
-RECORDER=vlc
+RECORDER=streamripper
 
 
 #STREAM=http://www.radiosimba.ug:8000/stream
-STREAM='http://www.radiosimba.ug:8000/stream'
+STREAM="http://www.radiosimba.ug:8000/stream -u Mozilla/5.0"
 
 #DATETIME=`date -d '+3 hour' '+%F_T%H.%M.%S'`
 DATETIME=`date +'%F_T%H.%M.%S'`
-STARTTIME='12:40'
+STARTTIME='20:50'
 DATE=`date +"%Y-%m-%d"`
-STOPTIME='12:50'
+STOPTIME='20:53'
 
 #hh:mm YYYY-MM-DD
 
