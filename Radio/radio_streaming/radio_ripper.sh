@@ -31,14 +31,15 @@ RECORD="http://162.210.196.217:8112/stream.mp3' -u Mozilla/5.0"
 DATETIME=`date -d '+3 hour' '+%F_T%H.%M.%S'`
 #For testing the script
 #DATETIME=`date +'%F_T%H.%M.%S'`
-#STARTTIME='20:50'
+STARTTIME='20:50'
 #DATE=`date +"%Y-%m-%d"`
 #STOPTIME='20:53'
 
 #hh:mm YYYY-MM-DD
 
-STREAMNAME='97.0'
-FILENAME=$STREAMNAME-$DATETIME.$FORMAT
+radio_stations=(MBABULE PRIME BUKEDDE BUDDU AKABOOZI SIMBA CBS89 CBS88 BEAT SAPIENSA PEARL SALT DIGIDA METRO RECORD)
+
+FILENAME=${radio_stations[0]}-$DATETIME.$FORMAT
 
 # create recording command
 RECCMD="streamripper $STREAM -d $SAVETO/ -a $FILENAME -s -A"
@@ -55,7 +56,7 @@ fi
 
 #mkdir -p Simba
 # write log file
-echo "*** Start $DATE_TIME ***" >> $SAVETO/log.txt
+echo "*** Start $DATETIME ***" >> $SAVETO/log.txt
 
 # execute the recording command
 echo $RECCMD
