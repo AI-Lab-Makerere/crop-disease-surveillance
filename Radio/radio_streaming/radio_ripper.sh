@@ -10,7 +10,7 @@ FORMAT=mp3
 
 # set recorder "vlc" "streamripper" "mplayer" or comment out to prompt user for selection
 RECORDER=streamripper
-#STREAMS=("DLF" "Dradio Kultur" "NPR" "BBC5")
+
 
 #STREAM=http://www.radiosimba.ug:8000/stream
 STREAM=http://www.radiosimba.ug:8000/stream -u Mozilla/5.0 -d
