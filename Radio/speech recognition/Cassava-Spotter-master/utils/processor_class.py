@@ -11,7 +11,7 @@ class DataProcessor():
         #self.generate_dir_spectrograms()
 
 
-    def convert_ogg2wav():
+    def convert_ogg2wav(self):
 
         self.train_wavfiles = [os.path.join(root, name)
             for root, dirs, files in os.walk(self.main_dir)#"data/nlp_keyword_bucket/train_1/")
