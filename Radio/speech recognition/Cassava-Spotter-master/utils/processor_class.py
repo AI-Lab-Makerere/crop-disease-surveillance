@@ -1,6 +1,6 @@
 import re
 import os
-from visualizers import generate_mel_spectogram
+from .visualizers import generate_mel_spectogram
 
 class DataProcessor():
 

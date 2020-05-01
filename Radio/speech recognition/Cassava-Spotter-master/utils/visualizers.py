@@ -1,5 +1,5 @@
-import IPython.display
-from ipywidgets import interact, interactive, fixed
+#import IPython.display
+#from ipywidgets import interact, interactive, fixed
 
 # Packages we're using
 import numpy as np
