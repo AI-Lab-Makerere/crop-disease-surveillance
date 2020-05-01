@@ -10,7 +10,8 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 from keras import backend as K
 
-from .generators import generate, make_image_oneshot_task
+from .generators import generate
+from .img_loaders import make_image_oneshot_task
 
 class TeacherModelLoader():
 
