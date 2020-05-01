@@ -152,7 +152,7 @@ class StudentModelLoader(TeacherModelLoader):
         if self.conv_base:
             self.conv_base = self.conv_base(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None)
         else:        
-        self.conv_base = MobileNetV2(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None) #rebuild on change)    
+            self.conv_base = MobileNetV2(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None) #rebuild on change)    
         
         left_input_tensor = Input(self.input_shape)
         right_input_tensor = Input(self.input_shape)
