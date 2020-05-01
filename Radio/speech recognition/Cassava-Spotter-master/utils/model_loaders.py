@@ -54,8 +54,8 @@ class TeacherModelLoader():
         
         # Convolutional Neural Network
         
-        encoded_l = conv_base(left_input)
-        encoded_r = conv_base(right_input)
+        encoded_l = self.conv_base(left_input)
+        encoded_r = self.conv_base(right_input)
         
         flatten = Flatten()
         dense = Dense(4096)
@@ -158,8 +158,8 @@ class StudentModelLoader(TeacherModelLoader):
         left_input_tensor = Input(self.input_shape)
         right_input_tensor = Input(self.input_shape)
 
-        left_encoded = conv_base(left_input_tensor)
-        right_encoded = conv_base(right_input_tensor)
+        left_encoded = self.conv_base(left_input_tensor)
+        right_encoded = self.conv_base(right_input_tensor)
 
         flatten_layer = Flatten()
         
