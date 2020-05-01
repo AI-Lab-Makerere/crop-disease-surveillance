@@ -45,7 +45,7 @@ class TeacherModelLoader():
         if self.conv_base:
             self.conv_base = self.conv_base(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None)
         else:
-        self.conv_base = ResNet50(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None) #rebuild on change)
+            self.conv_base = ResNet50(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None) #rebuild on change)
         
         # Define the tensors for the two input images
         left_input = Input(self.input_shape)
