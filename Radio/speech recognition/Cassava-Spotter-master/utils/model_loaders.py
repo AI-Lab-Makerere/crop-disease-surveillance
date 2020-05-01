@@ -15,7 +15,7 @@ from .img_loaders import make_image_oneshot_task
 
 class TeacherModelLoader():
 
-    def __init__(Xtrain, Xval, Xtest, input_shape, conv_base = None):
+    def __init__(self,Xtrain, Xval, Xtest, input_shape, conv_base = None):
         self.input_shape = input_shape
         self.conv_base = conv_base
         self.Xtrain = Xtrain
