@@ -133,7 +133,7 @@ class TeacherModelLoader():
             arr_of_sigmoids = np.asarray(predicted_arr, axis=0  )
             xtest_preds_of_siamese.append( (img_to_predict, arr_of_sigmoids) )
 
-    return preds_of_siamese, xtest_preds_of_siamese
+        return preds_of_siamese, xtest_preds_of_siamese
 
 
 
