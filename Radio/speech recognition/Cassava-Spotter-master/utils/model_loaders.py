@@ -166,7 +166,7 @@ class StudentModelLoader(TeacherModelLoader):
 
         dense_layer = Dense(512)
 
-        densed_tensor = dense_pre_difference(flattened)
+        densed_tensor = dense_layer(flattened)
 
         #L1_layer = Lambda(lambda tensors:K.abs(tensors[0] - tensors[1]))
         #difference_tensor = L1_layer([densed_right_tensor, densed_left_tensor])
