@@ -196,7 +196,7 @@ class StudentModelLoader(TeacherModelLoader):
 
         self.model_to_use.compile(loss='mse', optimizer=adam, metrics=['mae', "mse"])
         #student_model.fit_generator(distillation_generator(preds_of_siamese), steps_per_epoch=5, epochs=1426 ,callbacks=callbacks,validation_data=distillation_generator(xval_preds_of_siamese),validation_steps=4, verbose=1)
-        self.model_to_use.fit(X=preds_of_siamese[0], y=preds_of_siamese[1], batch_size=32,
+        self.model_to_use.fit(x=preds_of_siamese[0], y=preds_of_siamese[1], batch_size=32,
         #validation_data=xval_preds_of_siamese, 
         epochs=1426)
         self.model_to_use.save(save_dir)
