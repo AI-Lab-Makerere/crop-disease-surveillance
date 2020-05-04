@@ -141,7 +141,7 @@ class TeacherModelLoader():
 
 class StudentModelLoader(TeacherModelLoader):
     
-    def __init__(self,preds_of_siamese, xtest_preds_of_siamese, input_shape = (128,128,3), conv_base = None):
+    def __init__(self,preds_of_siamese, xtest_preds_of_siamese, input_shape, conv_base = None):
         self.input_shape = input_shape
         self.conv_base = conv_base
         self.preds_of_siamese = preds_of_siamese
