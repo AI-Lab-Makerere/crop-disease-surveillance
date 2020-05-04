@@ -141,12 +141,12 @@ class TeacherModelLoader():
 
 class StudentModelLoader(TeacherModelLoader):
     
-    def __init__(self,preds_of_siamese, xtest_preds_of_siamese, input_shape, conv_base = None):
+    def __init__(self, input_shape, conv_base = None):
         self.input_shape = input_shape
         self.conv_base = conv_base
-        self.preds_of_siamese = preds_of_siamese
+        #self.preds_of_siamese = preds_of_siamese
         #self.Xval = Xval
-        self.xtest_preds_of_siamese = xtest_preds_of_siamese
+        #self.xtest_preds_of_siamese = xtest_preds_of_siamese
         #How did we call a super class call again?        
 
     def get_model(self):
@@ -178,7 +178,7 @@ class StudentModelLoader(TeacherModelLoader):
         self.model_to_use = Model(inputs=input_tensor,outputs=prediction)
         
 
-    def train_model(self, save_dir='best_student.h5'):
+    def train_model(self, preds_of_siamese, save_dir='best_student.h5'):
 
         adam = Adam(lr=0.0005)
         stopping = EarlyStopping(monitor='val_mean_squared_error', min_delta=0, patience=50, verbose=1, mode='auto', baseline=None, restore_best_weights=True)
@@ -196,7 +196,7 @@ class StudentModelLoader(TeacherModelLoader):
 
         self.model_to_use.compile(loss='mse', optimizer=adam, metrics=['mae', "mse"])
         #student_model.fit_generator(distillation_generator(preds_of_siamese), steps_per_epoch=5, epochs=1426 ,callbacks=callbacks,validation_data=distillation_generator(xval_preds_of_siamese),validation_steps=4, verbose=1)
-        self.model_to_use.fit(X=self.preds_of_siamese[0], y=self.preds_of_siamese[1], batch_size=32,
+        self.model_to_use.fit(X=preds_of_siamese[0], y=preds_of_siamese[1], batch_size=32,
         #validation_data=xval_preds_of_siamese, 
         epochs=1426)
         self.model_to_use.save(save_dir)
