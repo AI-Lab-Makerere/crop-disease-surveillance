@@ -110,7 +110,7 @@ class TeacherModelLoader():
         print(self.model_to_use.evaluate(pairs, labels))
 
 
-    def gen_student_preds(self):
+    def gen_student_preds(self,Xtrain):
 
         preds_of_siamese = []
         from random import randint
