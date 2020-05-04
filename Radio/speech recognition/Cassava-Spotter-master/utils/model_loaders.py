@@ -174,7 +174,7 @@ class StudentModelLoader(TeacherModelLoader):
 
         L1_layer = Lambda(lambda tensors:K.abs(tensors[0] - tensors[1]))
 
-        difference_tensor = L1_layer(densed_right_tensor, densed_left_tensor)
+        difference_tensor = L1_layer([densed_right_tensor, densed_left_tensor])
         
         # Add a dense layer with a sigmoid unit to generate the similarity score
         prediction = Dense(1, activation="sigmoid")(difference_tensor)
