@@ -83,7 +83,7 @@ def get_batch_test_distillation(X, categories = None, reshape_size= (128, 128), 
   return images, targets
 
 
-def get_batch(X, categories = None, batch_size= 32,s="train"):
+def get_batch(X, categories = None, batch_size= 55,s="train"):
     """
     Create batch of n pairs, half same class, half different class
     """
@@ -107,12 +107,12 @@ def get_batch(X, categories = None, batch_size= 32,s="train"):
     targets=np.zeros((batch_size,))
     
     # make one half of it '1's, so 2nd half of batch has same class
-    targets[0][batch_size//2:] = 1
+    targets[batch_size//2:] = 1
     for i in range(batch_size):
         category = categories[i]
         idx_1 = rng.randint(0, len(X[category]))
         pairs[0][i,:,:,:] = X[category][idx_1].reshape(w, h, channels)
-         
+        
         # pick images of same class for 1st half, different for 2nd
         if i >= batch_size // 2:
             category_2 = category
@@ -122,8 +122,7 @@ def get_batch(X, categories = None, batch_size= 32,s="train"):
             category_2 = (category + rng.randint(1,len(X))) % len(X)
         idx_2 = rng.randint(0, len(X[category_2]))
         pairs[1][i,:,:,:] = X[category_2][idx_2].reshape( w, h, channels)
-        targets[1] = teacher_model.predict([pairs[0][i], pairs[1][i]])
-    # targets[0] == siamese targets --- targets[1] == student_targets
+    
     return pairs, targets
 
 def get_batch_student(X, teacher_model, batch_size= 1500,s="train"):
