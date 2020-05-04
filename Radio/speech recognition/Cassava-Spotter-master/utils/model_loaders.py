@@ -172,7 +172,7 @@ class StudentModelLoader(TeacherModelLoader):
         #difference_tensor = L1_layer([densed_right_tensor, densed_left_tensor])
         
         # Add a dense layer with a sigmoid unit to generate the similarity score
-        prediction = Dense(1, activation="sigmoid")(densed_tensor)
+        prediction = Dense(1)(densed_tensor)
                            #,
                            #bias_initializer=initialize_bias)  
         self.model_to_use = Model(inputs=input_tensor,outputs=prediction)
