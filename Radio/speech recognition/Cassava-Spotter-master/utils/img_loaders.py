@@ -3,6 +3,7 @@ import numpy as np
 
 from PIL import Image, ImageOps
 from random import choice, randrange
+import numpy.random as rng
 
 def load_image( infilename ) :
     target_size = (100, 32) # w H
