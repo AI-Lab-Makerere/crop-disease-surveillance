@@ -110,27 +110,27 @@ class TeacherModelLoader():
         print(self.model_to_use.evaluate(pairs, labels))
 
 
-    def gen_student_preds(self,Xtrain):
+    def gen_student_preds(self):
 
         preds_of_siamese = []
         from random import randint
         for word_idx in range(len(self.Xtrain)):
           print(word_idx)
-          for img_idx in range(Xtrain[word_idx].shape[0]):
+          for img_idx in range(self.Xtrain[word_idx].shape[0]):
             #keyword_to_predict = randint(0, len(Xtrain)-1)
             #spectrogram_to_predict = randint(0, Xtrain[keyword_to_predict].shape[0]-1)
-            img_to_predict =Xtrain[word_idx][img_idx]
+            img_to_predict =self.Xtrain[word_idx][img_idx]
             teacher_model_prediction_pairs = make_image_oneshot_task(img_to_predict, self.Xtrain)
             arr_of_sigmoids = np.asarray( self.model_to_use.predict(teacher_model_prediction_pairs, verbose=1) )
             preds_of_siamese.append( (img_to_predict, arr_of_sigmoids) )
 
         xtest_preds_of_siamese = []
-        for word_idx in range(len(Xtest)):
+        for word_idx in range(len(self.Xtest)):
           print(word_idx)
-          for img_idx in range(Xtest[word_idx].shape[0]):
+          for img_idx in range(self.Xtest[word_idx].shape[0]):
             #keyword_to_predict = randint(0, len(Xtrain)-1)
             #spectrogram_to_predict = randint(0, Xtrain[keyword_to_predict].shape[0]-1)
-            img_to_predict = Xtest[word_idx][img_idx]
+            img_to_predict = self.Xtest[word_idx][img_idx]
             predicted_arr = self.model_to_use.predict(img_to_predict, verbose=1)
             arr_of_sigmoids = np.asarray(predicted_arr, axis=0  )
             xtest_preds_of_siamese.append( (img_to_predict, arr_of_sigmoids) )
