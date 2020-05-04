@@ -7,7 +7,7 @@ from keras.regularizers import l2
 from keras.applications import Xception, ResNet50, MobileNetV2
 from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-
+from copy import deepcopy
 from keras import backend as K
 
 from .generators import generate
@@ -95,9 +95,10 @@ class TeacherModelLoader():
             #,
             #checkpoint
         ]
-
+        Xtrain = deepcopy(self.Xtrain)
+        Xval = deepcopy(self.Xval)
         self.model_to_use.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
-        self.model_to_use.fit_generator(generate(self.Xtrain,None,32), steps_per_epoch=32, epochs=200, 
+        self.model_to_use.fit_generator(generate(Xtrain,None,32), steps_per_epoch=32, epochs=200, 
                                     validation_data=generate(self.Xval,None,32),validation_steps=100, callbacks=callbacks)
 
         self.model_to_use.save(best_model_save_path)#'best_siamese.h5')
