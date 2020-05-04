@@ -130,9 +130,9 @@ class TeacherModelLoader():
           for img_idx in range(self.Xtest[word_idx].shape[0]):
             #keyword_to_predict = randint(0, len(Xtrain)-1)
             #spectrogram_to_predict = randint(0, Xtrain[keyword_to_predict].shape[0]-1)
-            img_to_predict = self.Xtest[word_idx][img_idx]
-            predicted_arr = self.model_to_use.predict(img_to_predict, verbose=1)
-            arr_of_sigmoids = np.asarray(predicted_arr, axis=0  )
+            img_to_predict =self.Xtest[word_idx][img_idx]
+            teacher_model_prediction_pairs = make_image_oneshot_task(img_to_predict, self.Xtest)
+            arr_of_sigmoids = np.asarray( self.model_to_use.predict(teacher_model_prediction_pairs, verbose=1) )
             xtest_preds_of_siamese.append( (img_to_predict, arr_of_sigmoids) )
 
         return preds_of_siamese, xtest_preds_of_siamese
