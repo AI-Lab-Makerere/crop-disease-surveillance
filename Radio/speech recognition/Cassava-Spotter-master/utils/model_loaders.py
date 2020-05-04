@@ -156,28 +156,23 @@ class StudentModelLoader(TeacherModelLoader):
         else:        
             self.conv_base = MobileNetV2(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None) #rebuild on change)    
         
-        left_input_tensor = Input(self.input_shape)
-        right_input_tensor = Input(self.input_shape)
+        input_tensor = Input(self.input_shape)
 
-        left_encoded = self.conv_base(left_input_tensor)
-        right_encoded = self.conv_base(right_input_tensor)
+        encoded = self.conv_base(input_tensor)
 
         flatten_layer = Flatten()
         
-        flattened_left_tensor = flatten_layer(left_encoded)
-        flattened_right_tensor = flatten_layer(right_encoded)
+        flattened = flatten_layer(encoded)
 
-        dense_pre_difference = Dense(512)
+        dense_layer = Dense(512)
 
-        densed_left_tensor = dense_pre_difference(flattened_left_tensor)
-        densed_right_tensor = dense_pre_difference(flattened_right_tensor)
+        densed_tensor = dense_pre_difference(flattened)
 
-        L1_layer = Lambda(lambda tensors:K.abs(tensors[0] - tensors[1]))
-
-        difference_tensor = L1_layer([densed_right_tensor, densed_left_tensor])
+        #L1_layer = Lambda(lambda tensors:K.abs(tensors[0] - tensors[1]))
+        #difference_tensor = L1_layer([densed_right_tensor, densed_left_tensor])
         
         # Add a dense layer with a sigmoid unit to generate the similarity score
-        prediction = Dense(1, activation="sigmoid")(difference_tensor)
+        prediction = Dense(1, activation="sigmoid")(densed_tensor)
                            #,
                            #bias_initializer=initialize_bias)  
         self.model_to_use = Model(inputs=input_tensor,outputs=prediction)
