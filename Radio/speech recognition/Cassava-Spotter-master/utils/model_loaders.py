@@ -141,8 +141,9 @@ class TeacherModelLoader():
 
 class StudentModelLoader(TeacherModelLoader):
     
-    def __init__(self, input_shape, conv_base = None):
-        self.input_shape = input_shape
+    def __init__(self, shape, conv_base = None):
+        self.shape = shape
+        self.input_shape = shape[1:]
         self.conv_base = conv_base
         #self.preds_of_siamese = preds_of_siamese
         #self.Xval = Xval
@@ -156,7 +157,7 @@ class StudentModelLoader(TeacherModelLoader):
         else:        
             self.conv_base = MobileNetV2(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None) #rebuild on change)    
         
-        input_tensor = Input(shape=self.input_shape)
+        input_tensor = Input(shape=self.shape)
 
         encoded = self.conv_base(input_tensor)
 
