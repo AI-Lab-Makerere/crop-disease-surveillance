@@ -12,7 +12,7 @@ class DataProcessor():
         #self.generate_dir_spectrograms()
 
 
-    def convert_ogg2wav(self):
+    def convert_ogg2wav(self, convert=True):
 
         self.train_wavfiles = [os.path.join(root, name)
             for root, dirs, files in os.walk(self.main_dir)#"data/nlp_keyword_bucket/train_1/")
@@ -26,27 +26,29 @@ class DataProcessor():
                 for name in files
                 if name.endswith((".wav"))]
 
+        
         if self.test_dir:
 
             self.test_wavfiles = [os.path.join(root, name)
                 for root, dirs, files in os.walk(self.test_dir)#"data/nlp_keyword_bucket/test_1/")
                 for name in files
                 if name.endswith((".wav"))]
-
-        for filename in self.train_wavfiles:
-            words = re.findall(r"[\w']+", filename)
-            os.system("ffmpeg -y -i {0} {0}".format(filename))
-
-        if self.val_dir:
-
-            for filename in self.val_wavfiles:
+        
+        if convert:
+            for filename in self.train_wavfiles:
                 words = re.findall(r"[\w']+", filename)
                 os.system("ffmpeg -y -i {0} {0}".format(filename))
 
-        if self.test_dir:
-            for filename in self.test_wavfiles:
-                words = re.findall(r"[\w']+", filename)
-                os.system("ffmpeg -y -i {0} {0}".format(filename))
+            if self.val_dir:
+
+                for filename in self.val_wavfiles:
+                    words = re.findall(r"[\w']+", filename)
+                    os.system("ffmpeg -y -i {0} {0}".format(filename))
+
+            if self.test_dir:
+                for filename in self.test_wavfiles:
+                    words = re.findall(r"[\w']+", filename)
+                    os.system("ffmpeg -y -i {0} {0}".format(filename))
 
 
     def generate_dir_spectrograms(self,main_dir, val_dir = None, test_dir = None):
