@@ -141,10 +141,11 @@ class TeacherModelLoader():
 
 class StudentModelLoader(TeacherModelLoader):
     
-    def __init__(self, shape, conv_base = None):
+    def __init__(self, shape, conv_base = None, classes=165):
         self.shape = shape
         self.input_shape = shape[1:]
         self.conv_base = conv_base
+        self.classes = classes
         #self.preds_of_siamese = preds_of_siamese
         #self.Xval = Xval
         #self.xtest_preds_of_siamese = xtest_preds_of_siamese
@@ -173,7 +174,7 @@ class StudentModelLoader(TeacherModelLoader):
         #difference_tensor = L1_layer([densed_right_tensor, densed_left_tensor])
         
         # Add a dense layer with a sigmoid unit to generate the similarity score
-        prediction = Dense(1)(densed_tensor)
+        prediction = Dense(self.classes)(densed_tensor)
                            #,
                            #bias_initializer=initialize_bias)  
         self.model_to_use = Model(inputs=input_tensor,outputs=prediction)
