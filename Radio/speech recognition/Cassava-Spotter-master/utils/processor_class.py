@@ -53,10 +53,10 @@ class DataProcessor():
 
     def generate_dir_spectrograms(self,main_dir, val_dir = None, test_dir = None):
 
-        #train_wavfiles = [os.path.join(root, name)
-         #   for root, dirs, files in os.walk(main_dir)#"data/nlp_keyword_bucket/train_1/")
-          #  for name in files
-           # if name.endswith((".wav"))]
+        train_wavfiles = [os.path.join(root, name)
+            for root, dirs, files in os.walk(main_dir)#"data/nlp_keyword_bucket/train_1/")
+            for name in files
+            if name.endswith((".png"))]
 
         #if val_dir:
 
@@ -72,7 +72,7 @@ class DataProcessor():
            #     for name in files
            #     if name.endswith((".wav"))]
 
-        for train_wavfl in self.train_wavfiles:
+        for train_wavfl in train_wavfiles:
           generate_mel_spectogram(train_wavfl)
           
         if self.val_dir:
