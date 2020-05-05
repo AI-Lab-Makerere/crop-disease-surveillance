@@ -157,7 +157,7 @@ class StudentModelLoader(TeacherModelLoader):
         else:        
             self.conv_base = MobileNetV2(include_top=False, input_tensor=None, input_shape=self.input_shape, pooling=None, classes=None) #rebuild on change)    
         
-        input_tensor = Input()
+        input_tensor = Input(shape=self.input_shape)
 
         encoded = self.conv_base(input_tensor)
 
