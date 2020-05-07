@@ -177,7 +177,7 @@ def generate(X, labels,batch_size=32):
 
 
 
-def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [ "Yes", "No", "Up", "Down", "Left", "Right", "On","Off", "Stop", "Go"]):
+def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [ "yes", "no", "up", "down", "left", "right", "on","off", "stop", "go"]):
     '''
     path => Path of train directory or test directory
     '''
