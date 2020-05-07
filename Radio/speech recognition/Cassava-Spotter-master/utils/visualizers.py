@@ -396,6 +396,7 @@ def generate_mel_spectogram(mywav, output_dir=None):
   if output_dir:
     path_to_file = output_dir + mywav.split('/')[-2] + mywav.split('/')[-1].split('.')[0] 
     print (path_to_file)
+    print(mywav.split('/'))
   savename = path_to_file + '.png'
   plt.savefig(savename, bbox_inches=0, transparent=True)
   plt.close(fig)
