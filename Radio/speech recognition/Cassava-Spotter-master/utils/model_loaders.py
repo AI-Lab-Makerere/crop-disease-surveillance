@@ -106,11 +106,11 @@ class TeacherModelLoader():
                     
 
             self.model_to_use.fit_generator(lazy_generate(kwargs["root_dir"],kwargs["training_list"]
-        ,kwargs["batch_size"], kwargs["whitelist"]), steps_per_epoch=32, epochs=200, validation_data=lazy_generate(kwargs["root_dir"],
+        ,kwargs["batch_size"], kwargs["whitelist"]),use_multiprocessing=False, steps_per_epoch=32, epochs=200, validation_data=lazy_generate(kwargs["root_dir"],
             kwargs["validation_list"],kwargs["batch_size"], 
             kwargs["whitelist"]),validation_steps=100, callbacks=callbacks)
         else:        
-            self.model_to_use.fit_generator(generate(Xtrain,None,32), steps_per_epoch=32, epochs=200, 
+            self.model_to_use.fit_generator(generate(Xtrain,None,32),use_multiprocessing=False, steps_per_epoch=32, epochs=200, 
                                     validation_data=generate(self.Xval,None,32),validation_steps=100, callbacks=callbacks)
 
         self.model_to_use.save(best_model_save_path)#'best_siamese.h5')
