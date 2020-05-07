@@ -9,6 +9,7 @@ from scipy.io import wavfile
 from scipy.signal import butter, lfilter
 import scipy.ndimage
 import os
+import gc
 
 ###  Parameters ###
 fft_size = 2048  # window size for the FFT
@@ -403,4 +404,5 @@ def generate_mel_spectogram(mywav, output_dir=None):
   savename = path_to_file + '.png'
   plt.savefig(savename, bbox_inches=0, transparent=True)
   plt.close(fig)
-
+  del rate, data
+  gc.collect()
