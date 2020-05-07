@@ -1,4 +1,4 @@
-
+from .img_loaders import load_image
 from random import randint, choice
 import numpy as np
 import os
