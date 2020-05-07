@@ -51,7 +51,7 @@ class DataProcessor():
                     os.system("ffmpeg -y -i {0} {0}".format(filename))
 
 
-    def generate_dir_spectrograms(self,main_dir, val_dir = None, test_dir = None):
+    def generate_dir_spectrograms(self,main_dir, val_dir = None, test_dir = None, output_dir = None):
 
         train_wavfiles = [os.path.join(root, name)
             for root, dirs, files in os.walk(main_dir)#"data/nlp_keyword_bucket/train_1/")
@@ -73,14 +73,14 @@ class DataProcessor():
            #     if name.endswith((".wav"))]
 
         for train_wavfl in train_wavfiles:
-          generate_mel_spectogram(train_wavfl)
+          generate_mel_spectogram(train_wavfl, output_dir = output_dir)
           
         if self.val_dir:
             for val_wavfl in self.val_wavfiles:
-              generate_mel_spectogram(val_wavfl)
+              generate_mel_spectogram(val_wavfl, output_dir = output_dir)
         
         if self.test_dir:
             for test_wavfl in self.test_wavfiles:
-              generate_mel_spectogram(test_wavfl)
+              generate_mel_spectogram(test_wavfl, output_dir = output_dir)
 
 
