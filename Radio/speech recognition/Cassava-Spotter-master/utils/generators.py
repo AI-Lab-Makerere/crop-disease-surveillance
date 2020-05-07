@@ -212,7 +212,7 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
 
         else:
             while True:
-                sample2 = choice(train_list)
+                sample2 = choice(load_list)
                 keyword2 = sample.split("/")[1]
                 filename2 = sample.split("/")[-1]
                 if keyword1 != keyword2:
