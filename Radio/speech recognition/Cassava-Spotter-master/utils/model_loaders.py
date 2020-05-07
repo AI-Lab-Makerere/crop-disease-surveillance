@@ -4,7 +4,7 @@ import numpy as np
 from keras.layers import Input, Conv2D, Dense, MaxPooling2D, Lambda, Flatten
 from keras.models import Sequential, Model
 from keras.regularizers import l2
-from keras.applications import Xception, ResNet50, MobileNetV2
+from keras.applications import Xception, ResNet50V2, MobileNetV2
 from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.losses import binary_crossentropy
