@@ -1,6 +1,7 @@
 
 from random import randint, choice
 import numpy as np
+import os
 
 def _get_distillation_batch(preds, batch_size=32):
   main_img_arr = np.empty((32,128,128,3), float)
