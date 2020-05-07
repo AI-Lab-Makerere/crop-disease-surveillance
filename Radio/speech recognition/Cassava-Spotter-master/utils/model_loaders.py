@@ -7,11 +7,15 @@ from keras.regularizers import l2
 from keras.applications import Xception, ResNet50, MobileNetV2
 from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.losses import binary_crossentropy
 from copy import deepcopy
 from keras import backend as K
 
 from .generators import generate
 from .img_loaders import make_image_oneshot_task
+
+def my_binary_crossentropy(y_true, y_pred):
+    return binary_crossentropy(y_true, y_pred, from_logits=True)
 
 class TeacherModelLoader():
 
@@ -72,7 +76,7 @@ class TeacherModelLoader():
         L1_distance = L1_layer([dense_l, dense_r])
         
         # Add a dense layer with a sigmoid unit to generate the similarity score
-        prediction = Dense(1,activation='sigmoid')(L1_distance)
+        prediction = Dense(1)(L1_distance)#,activation='sigmoid')
                            #,
                            #bias_initializer=initialize_bias)
             
@@ -97,7 +101,7 @@ class TeacherModelLoader():
         ]
         Xtrain = deepcopy(self.Xtrain)
         Xval = deepcopy(self.Xval)
-        self.model_to_use.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
+        self.model_to_use.compile(loss=my_binary_crossentropy, optimizer=adam, metrics=['accuracy'])
         self.model_to_use.fit_generator(generate(Xtrain,None,32), steps_per_epoch=32, epochs=200, 
                                     validation_data=generate(self.Xval,None,32),validation_steps=100, callbacks=callbacks)
 
