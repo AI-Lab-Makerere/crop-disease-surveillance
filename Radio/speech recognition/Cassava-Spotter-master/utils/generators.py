@@ -184,7 +184,7 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
     
     # randomly sample several classes to use in the batch  
     # initialize 2 empty arrays for the input image batch
-    pairs=[np.zeros((batch_size, 100, 32, 3)) for i in range(2)]
+    pairs=[np.zeros((batch_size, 32, 100, 3)) for i in range(2)]
     
     # initialize vector for the targets
     targets=np.zeros((batch_size,))
