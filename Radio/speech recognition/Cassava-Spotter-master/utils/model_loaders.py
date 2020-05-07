@@ -11,7 +11,7 @@ from keras.losses import binary_crossentropy
 from copy import deepcopy
 from keras import backend as K
 
-from .generators import generate
+from .generators import generate, lazy_generate
 from .img_loaders import make_image_oneshot_task
 
 def my_binary_crossentropy(y_true, y_pred):
@@ -87,7 +87,7 @@ class TeacherModelLoader():
         # return the model
         #self.siamese_net
 
-    def train_model(self,best_model_save_path = 'best_siamese.h5'):
+    def train_model(self,best_model_save_path = 'best_siamese.h5', command_dataset=False, **kwargs):
 
         adam = Adam(lr=0.00005)
         stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=30, verbose=1, mode='min', baseline=None, restore_best_weights=True)
@@ -102,7 +102,15 @@ class TeacherModelLoader():
         Xtrain = deepcopy(self.Xtrain)
         Xval = deepcopy(self.Xval)
         self.model_to_use.compile(loss=my_binary_crossentropy, optimizer=adam, metrics=['accuracy'])
-        self.model_to_use.fit_generator(generate(Xtrain,None,32), steps_per_epoch=32, epochs=200, 
+        if command_dataset:
+                    
+
+            self.model_to_use.fit_generator(lazy_generate(kwargs["root_dir"],kwargs["training_list"]
+        ,kwargs["batch_size"], kwargs["whitelist"]), steps_per_epoch=32, epochs=200, validation_data=lazy_generate(kwargs["root_dir"],
+            kwargs["validation_list"],kwargs["batch_size"], 
+            kwargs["whitelist"]),validation_steps=100, callbacks=callbacks)
+        else:        
+            self.model_to_use.fit_generator(generate(Xtrain,None,32), steps_per_epoch=32, epochs=200, 
                                     validation_data=generate(self.Xval,None,32),validation_steps=100, callbacks=callbacks)
 
         self.model_to_use.save(best_model_save_path)#'best_siamese.h5')

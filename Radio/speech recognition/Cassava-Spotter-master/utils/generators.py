@@ -1,5 +1,5 @@
 
-from random import randint
+from random import randint, choice
 import numpy as np
 
 def _get_distillation_batch(preds, batch_size=32):
@@ -172,5 +172,63 @@ def generate(X, labels,batch_size=32):
     while True:
         pairs, targets = get_batch(X, labels,batch_size)
         yield (pairs, targets)
+
+
+
+
+def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [ "Yes", "No", "Up", "Down", "Left", "Right", "On","Off", "Stop", "Go"]):
+    '''
+    path => Path of train directory or test directory
+    '''
+    
+    # randomly sample several classes to use in the batch  
+    # initialize 2 empty arrays for the input image batch
+    pairs=[np.zeros((batch_size, w, h, channels)) for i in range(2)]
+    
+    # initialize vector for the targets
+    targets=np.zeros((batch_size,))
+    
+    # make one half of it '1's, so 2nd half of batch has same class
+    targets[batch_size//2:] = 1
+    for i in range(batch_size):
+        sample1 = choice(train_list)
+        keyword1 = sample1.split("/")[1]
+        filename1 = sample1.split("/")[-1]
+        sample1 = os.path.join(root_dir, sample1[2:])
+        pairs[0][i,:,:,:] = load_image(sample1)
+        
+        # pick images of same class for 1st half, different for 2nd
+        if i >= batch_size // 2:
+            while True:
+                sample2 = choice(train_list)
+                keyword2 = sample.split("/")[1]
+                filename2 = sample.split("/")[-1]
+                if keyword1 == keyword2 and filename1 != filename2:                    
+                    break
+                if keyword1 not in whitelist and keyword2 not in whitelist:
+                    break
+            sample2 = os.path.join(root_dir, sample2[2:])
+            pairs[1][i,:,:,:] = load_image(sample2)
+
+        else:
+            while True:
+                sample2 = choice(train_list)
+                keyword2 = sample.split("/")[1]
+                filename2 = sample.split("/")[-1]
+                if keyword1 != keyword2:
+                    if keyword1 in whitelist and keyword2 not in whitelist:
+                        continue
+                    break    
+            sample2 = os.path.join(root_dir, sample2[2:])
+            pairs[1][i,:,:,:] = load_image(sample2)
+
+    return pairs, targets
+
+
+def lazy_generate(root_dir = None, load_list = None, batch_size=32,whitelist = [ "Yes", "No", "Up", "Down", "Left", "Right", "On","Off", "Stop", "Go"]):
+    while True:
+        pairs, targets = get_batch(root_dir, load_list,batch_size, whitelist)
+        yield (pairs, targets)
+
 
 

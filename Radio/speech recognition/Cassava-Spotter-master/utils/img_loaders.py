@@ -16,9 +16,7 @@ def load_image( infilename ) :
     return img
 
 def loadimgs(path='/content/nlp_keyword_bucket/train_1/', val_list = None, test_list = None, n = 0):
-    '''
-    path => Path of train directory or test directory
-    '''
+    
     X=[]
     y = []
     cat_dict = {}
