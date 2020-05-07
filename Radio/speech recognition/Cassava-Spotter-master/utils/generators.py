@@ -202,8 +202,8 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
         if i >= batch_size // 2:
             while True:
                 sample2 = choice(load_list)
-                keyword2 = sample.split("/")[1]
-                filename2 = sample.split("/")[-1]
+                keyword2 = sample2.split("/")[1]
+                filename2 = sample2.split("/")[-1]
                 if keyword1 == keyword2 and filename1 != filename2:                    
                     break
                 if keyword1 not in whitelist and keyword2 not in whitelist:
@@ -214,8 +214,8 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
         else:
             while True:
                 sample2 = choice(load_list)
-                keyword2 = sample.split("/")[1]
-                filename2 = sample.split("/")[-1]
+                keyword2 = sample2.split("/")[1]
+                filename2 = sample2.split("/")[-1]
                 if keyword1 != keyword2:
                     if keyword1 in whitelist and keyword2 not in whitelist:
                         continue
