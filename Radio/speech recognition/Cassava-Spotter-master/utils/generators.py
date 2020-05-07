@@ -227,7 +227,7 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
 
 def lazy_generate(root_dir = None, load_list = None, batch_size=32,whitelist = [ "Yes", "No", "Up", "Down", "Left", "Right", "On","Off", "Stop", "Go"]):
     while True:
-        pairs, targets = get_batch(root_dir, load_list,batch_size, whitelist)
+        pairs, targets = lazy_loadimgs(root_dir, load_list,batch_size, whitelist)
         yield (pairs, targets)
 
 
