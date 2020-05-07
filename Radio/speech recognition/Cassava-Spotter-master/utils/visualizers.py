@@ -361,6 +361,17 @@ def create_mel_filter(
 
 def generate_mel_spectogram(mywav, output_dir=None):
   #mywav = "nlp_keyword_bucket/data_dir/okugimusa/4db337b1ecbd4a67bbecbd503d74750a_7d66741980a244a28be5d0fa9d572d17.wav"
+  if output_dir:
+    try:
+      os.mkdir( output_dir + mywav.split('/')[-2] + "/" )
+    except:
+      pass
+    path_to_file = output_dir + mywav.split('/')[-2] + "/" + mywav.split('/')[-1].split('.')[0]
+  else:
+    path_to_file = mywav.split('.')[0]
+
+  if os.path.isfile(path_to_file + '.png'):
+    return 
   try:
     rate, data = wavfile.read(mywav)
   except:
@@ -394,13 +405,8 @@ def generate_mel_spectogram(mywav, output_dir=None):
       origin="lower",
   )
   plt.axis('off')
-  path_to_file = mywav.split('.')[0]
-  if output_dir:
-    try:
-      os.mkdir( output_dir + mywav.split('/')[-2] + "/" )
-    except:
-      pass
-    path_to_file = output_dir + mywav.split('/')[-2] + "/" + mywav.split('/')[-1].split('.')[0] 
+  
+  
   savename = path_to_file + '.png'
   plt.savefig(savename, bbox_inches=0, transparent=True)
   fig.clf()
