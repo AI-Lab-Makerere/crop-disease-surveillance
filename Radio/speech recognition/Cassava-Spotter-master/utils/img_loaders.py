@@ -57,7 +57,6 @@ def loadimgs(path='/content/nlp_keyword_bucket/train_1/', val_list = None, test_
                     test_category_images.append(image)
                     y_test.append(curr_y)
                     continue
-            else:
             category_images.append(image)
             y.append(curr_y)
         try:

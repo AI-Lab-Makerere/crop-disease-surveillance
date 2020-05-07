@@ -56,7 +56,7 @@ class DataProcessor():
         train_wavfiles = [os.path.join(root, name)
             for root, dirs, files in os.walk(main_dir)#"data/nlp_keyword_bucket/train_1/")
             for name in files
-            if name.endswith((".png"))]
+            if name.endswith((".wav"))]
 
         #if val_dir:
 
