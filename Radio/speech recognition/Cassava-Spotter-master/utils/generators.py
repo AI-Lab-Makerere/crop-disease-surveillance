@@ -191,7 +191,7 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
     # make one half of it '1's, so 2nd half of batch has same class
     targets[batch_size//2:] = 1
     for i in range(batch_size):
-        sample1 = choice(training_list)
+        sample1 = choice(load_list)
         keyword1 = sample1.split("/")[1]
         filename1 = sample1.split("/")[-1]
         sample1 = os.path.join(root_dir, sample1[2:])
@@ -200,7 +200,7 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
         # pick images of same class for 1st half, different for 2nd
         if i >= batch_size // 2:
             while True:
-                sample2 = choice(training_list)
+                sample2 = choice(load_list)
                 keyword2 = sample.split("/")[1]
                 filename2 = sample.split("/")[-1]
                 if keyword1 == keyword2 and filename1 != filename2:                    
