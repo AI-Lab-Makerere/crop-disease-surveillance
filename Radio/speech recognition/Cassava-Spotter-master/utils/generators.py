@@ -99,7 +99,7 @@ def get_batch(X, categories = None, batch_size= 55,s="train"):
     w, h, channels = X[0][0].shape
     
     # randomly sample several classes to use in the batch
-    categories = rng.choice(n_classes,size=(batch_size,),replace=False)
+    categories = rng.choice(n_classes,size=(batch_size,),replace=True)
     
     # initialize 2 empty arrays for the input image batch
     pairs=[np.zeros((batch_size, w, h, channels)) for i in range(2)]
