@@ -15,7 +15,7 @@ def load_image( infilename ) :
     img = img[:, :, :3]
     return img
 
-def loadimgs(path='/content/nlp_keyword_bucket/train_1/', val_list = None, test_list = None, n = 0):
+def loadimgs(path='/content/nlp_keyword_bucket/train_1/', val_list = None, test_list = None, n = 0, whitelist=["endwadde", "ebiwojjolo", "ebiwuka", "ebigimusa", "ensiringanyi", "munyeera", "ndwadde"]):
     
     X=[]
     y = []
@@ -25,6 +25,8 @@ def loadimgs(path='/content/nlp_keyword_bucket/train_1/', val_list = None, test_
     
     # we load every alphabet seperately so we can isolate them later
     for word in os.listdir(path):
+        if word not in whitelist:
+            continue
         print("loading word: " + word)
         word_dict[word] = curr_y
         word_path = os.path.join(path,word)
