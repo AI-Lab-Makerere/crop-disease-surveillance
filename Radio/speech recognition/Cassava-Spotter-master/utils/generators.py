@@ -204,10 +204,10 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
         sample2 = os.path.join(root_dir, sample2[2:])
         pairs[1][i,:,:,:] = load_image(sample2)
         if keyword1 not in whitelist and keyword2 not in whitelist:
-            target[i] = 1
+            targets[i] = 1
             continue        
         elif keyword1 == keyword2:
-            target[i] = 1
+            targets[i] = 1
             continue
 
     return pairs, targets
