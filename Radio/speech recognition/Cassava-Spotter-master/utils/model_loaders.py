@@ -104,10 +104,8 @@ class TeacherModelLoader():
         self.model_to_use.compile(loss=my_binary_crossentropy, optimizer=adam, metrics=['accuracy'])
         if command_dataset:
                     
-
             self.history = self.model_to_use.fit_generator(lazy_generate(kwargs["root_dir"],kwargs["training_list"]
-        ,kwargs["batch_size"],# kwargs["whitelist"]),
-        use_multiprocessing=False, steps_per_epoch=32, epochs=200, validation_data=lazy_generate(kwargs["root_dir"],
+        ,kwargs["batch_size"], kwargs["whitelist"]),use_multiprocessing=False, steps_per_epoch=32, epochs=200, validation_data=lazy_generate(kwargs["root_dir"],
             kwargs["validation_list"],kwargs["batch_size"], 
             kwargs["whitelist"]),validation_steps=100, callbacks=callbacks)
         else:        
