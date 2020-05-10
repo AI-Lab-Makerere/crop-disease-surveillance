@@ -190,38 +190,25 @@ def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [
     targets=np.zeros((batch_size,))
     
     # make one half of it '1's, so 2nd half of batch has same class
-    targets[batch_size//2:] = 1
+    #targets[batch_size//2:] = 1
     for i in range(batch_size):
         sample1 = choice(load_list)
         keyword1 = sample1.split("/")[1]
         filename1 = sample1.split("/")[-1]
         sample1 = os.path.join(root_dir, sample1[2:])
         pairs[0][i,:,:,:] = load_image(sample1)
-        
         # pick images of same class for 1st half, different for 2nd
-        if i >= batch_size // 2:
-            while True:
-                sample2 = choice(load_list)
-                keyword2 = sample2.split("/")[1]
-                filename2 = sample2.split("/")[-1]
-                if keyword1 == keyword2 and filename1 != filename2:                    
-                    break
-                if keyword1 not in whitelist and keyword2 not in whitelist:
-                    break
-            sample2 = os.path.join(root_dir, sample2[2:])
-            pairs[1][i,:,:,:] = load_image(sample2)
-
-        else:
-            while True:
-                sample2 = choice(load_list)
-                keyword2 = sample2.split("/")[1]
-                filename2 = sample2.split("/")[-1]
-                if keyword1 != keyword2:
-                    if keyword1 in whitelist and keyword2 not in whitelist:
-                        continue
-                    break    
-            sample2 = os.path.join(root_dir, sample2[2:])
-            pairs[1][i,:,:,:] = load_image(sample2)
+        sample2 = choice(load_list)
+        keyword2 = sample2.split("/")[1]
+        filename2 = sample2.split("/")[-1]
+        sample2 = os.path.join(root_dir, sample2[2:])
+        pairs[1][i,:,:,:] = load_image(sample2)
+        if keyword1 not in whitelist and keyword2 not in whitelist:
+            target[i] = 1
+            continue        
+        elif keyword1 == keyword2:
+            target[i] = 1
+            continue
 
     return pairs, targets
 
