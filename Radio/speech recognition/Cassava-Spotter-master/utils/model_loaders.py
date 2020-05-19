@@ -104,7 +104,6 @@ class TeacherModelLoader():
         self.model_to_use.compile(loss=my_binary_crossentropy, optimizer=adam, metrics=['accuracy'])
         if command_dataset:
                     
-
             self.history = self.model_to_use.fit_generator(lazy_generate(kwargs["root_dir"],kwargs["training_list"]
         ,kwargs["batch_size"], kwargs["whitelist"]),use_multiprocessing=False, steps_per_epoch=32, epochs=200, validation_data=lazy_generate(kwargs["root_dir"],
             kwargs["validation_list"],kwargs["batch_size"], 
@@ -131,7 +130,7 @@ class TeacherModelLoader():
           for img_idx in range(self.Xtrain[word_idx].shape[0]):
             #keyword_to_predict = randint(0, len(Xtrain)-1)
             #spectrogram_to_predict = randint(0, Xtrain[keyword_to_predict].shape[0]-1)
-            img_to_predict =self.Xtrain[word_idx][img_idx]
+            img_to_predict = self.Xtrain[word_idx][img_idx]
             teacher_model_prediction_pairs = make_image_oneshot_task(img_to_predict, self.Xtrain)
             arr_of_sigmoids = np.asarray( self.model_to_use.predict(teacher_model_prediction_pairs, verbose=1) )
             preds_of_siamese.append( (img_to_predict, arr_of_sigmoids) )
@@ -194,7 +193,7 @@ class StudentModelLoader(TeacherModelLoader):
 
     def train_model(self, preds_of_siamese, save_dir='best_student.h5'):
 
-        adam = Adam(lr=0.0005)
+        adam = Adam(lr=0.00005)
         stopping = EarlyStopping(monitor='val_mean_squared_error', min_delta=0, patience=50, verbose=1, mode='auto', baseline=None, restore_best_weights=True)
 
 
