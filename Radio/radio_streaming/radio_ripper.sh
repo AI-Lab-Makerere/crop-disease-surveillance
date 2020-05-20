@@ -17,7 +17,7 @@ declare -a StationArray=("http://uk2.internet-radio.com:8332/live -u Mozilla/5.0
 DATETIME=`date -d '+3 hour' '+%F_T%H.%M.%S'`
 #For testing the script
 #DATETIME=`date +'%F_T%H.%M.%S'`
-STARTTIME='20:50'
+#STARTTIME='20:50'
 #DATE=`date +"%Y-%m-%d"`
 #STOPTIME='20:53'
 
@@ -32,7 +32,7 @@ STARTTIME='20:50'
 #RECCMD="cvlc --sout \"#transcode{vcodec=none,acodec=$FORMAT,ab=128,channels=2,samplerate=44100}:std{access=file,mux=$FORMAT,dst=$SAVETO/$FILENAME}\" $STREAM"
 
 # this will stop the recording
-STOPCMD="sleep 100; pkill $RECORDER;"
+#STOPCMD="sleep 100; pkill $RECORDER;"
 
 
 # create the save directory if it doesn't exist
@@ -44,7 +44,7 @@ fi
 # write log file
 echo "*** Start $DATETIME ***" >> $SAVETO/log.txt
 
- 
+
 
 # execute the recording command
 for radio_station in ${StationArray[@]}; do
