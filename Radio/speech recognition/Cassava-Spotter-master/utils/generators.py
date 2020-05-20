@@ -1,6 +1,7 @@
-
-from random import randint
+from .img_loaders import load_image
+from random import randint, choice
 import numpy as np
+import os
 
 def _get_distillation_batch(preds, batch_size=32):
   main_img_arr = np.empty((32,128,128,3), float)
@@ -83,7 +84,7 @@ def get_batch_test_distillation(X, categories = None, reshape_size= (128, 128), 
   return images, targets
 
 
-def get_batch(X, categories = None, batch_size= 32,s="train"):
+def get_batch(X, categories = None, batch_size= 55,s="train"):
     """
     Create batch of n pairs, half same class, half different class
     """
@@ -98,7 +99,7 @@ def get_batch(X, categories = None, batch_size= 32,s="train"):
     w, h, channels = X[0][0].shape
     
     # randomly sample several classes to use in the batch
-    categories = rng.choice(n_classes,size=(batch_size,),replace=False)
+    categories = rng.choice(n_classes,size=(batch_size,),replace=True)
     
     # initialize 2 empty arrays for the input image batch
     pairs=[np.zeros((batch_size, w, h, channels)) for i in range(2)]
@@ -107,12 +108,12 @@ def get_batch(X, categories = None, batch_size= 32,s="train"):
     targets=np.zeros((batch_size,))
     
     # make one half of it '1's, so 2nd half of batch has same class
-    targets[0][batch_size//2:] = 1
+    targets[batch_size//2:] = 1
     for i in range(batch_size):
         category = categories[i]
         idx_1 = rng.randint(0, len(X[category]))
         pairs[0][i,:,:,:] = X[category][idx_1].reshape(w, h, channels)
-         
+        
         # pick images of same class for 1st half, different for 2nd
         if i >= batch_size // 2:
             category_2 = category
@@ -122,8 +123,7 @@ def get_batch(X, categories = None, batch_size= 32,s="train"):
             category_2 = (category + rng.randint(1,len(X))) % len(X)
         idx_2 = rng.randint(0, len(X[category_2]))
         pairs[1][i,:,:,:] = X[category_2][idx_2].reshape( w, h, channels)
-        targets[1] = teacher_model.predict([pairs[0][i], pairs[1][i]])
-    # targets[0] == siamese targets --- targets[1] == student_targets
+    
     return pairs, targets
 
 def get_batch_student(X, teacher_model, batch_size= 1500,s="train"):
@@ -173,5 +173,50 @@ def generate(X, labels,batch_size=32):
     while True:
         pairs, targets = get_batch(X, labels,batch_size)
         yield (pairs, targets)
+
+
+
+
+def lazy_loadimgs(root_dir = None, load_list = None, batch_size=32,whitelist = [ "yes", "no", "up", "down", "left", "right", "on","off", "stop", "go"]):
+    '''
+    path => Path of train directory or test directory
+    '''
+    
+    # randomly sample several classes to use in the batch  
+    # initialize 2 empty arrays for the input image batch
+    pairs=[np.zeros((batch_size, 32, 100, 3)) for i in range(2)]
+    
+    # initialize vector for the targets
+    targets=np.zeros((batch_size,))
+    
+    # make one half of it '1's, so 2nd half of batch has same class
+    #targets[batch_size//2:] = 1
+    for i in range(batch_size):
+        sample1 = choice(load_list)
+        keyword1 = sample1.split("/")[1]
+        filename1 = sample1.split("/")[-1]
+        sample1 = os.path.join(root_dir, sample1[2:])
+        pairs[0][i,:,:,:] = load_image(sample1)
+        # pick images of same class for 1st half, different for 2nd
+        sample2 = choice(load_list)
+        keyword2 = sample2.split("/")[1]
+        filename2 = sample2.split("/")[-1]
+        sample2 = os.path.join(root_dir, sample2[2:])
+        pairs[1][i,:,:,:] = load_image(sample2)
+        if keyword1 not in whitelist and keyword2 not in whitelist:
+            targets[i] = 1
+            continue        
+        elif keyword1 == keyword2:
+            targets[i] = 1
+            continue
+
+    return pairs, targets
+
+
+def lazy_generate(root_dir = None, load_list = None, batch_size=32,whitelist = [ "yes", "no", "up", "down", "left", "right", "on","off", "stop", "go"]):
+    while True:
+        pairs, targets = lazy_loadimgs(root_dir, load_list,batch_size, whitelist)
+        yield (pairs, targets)
+
 
 

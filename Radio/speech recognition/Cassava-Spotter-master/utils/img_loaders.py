@@ -3,6 +3,7 @@ import numpy as np
 
 from PIL import Image, ImageOps
 from random import choice, randrange
+import numpy.random as rng
 
 def load_image( infilename ) :
     target_size = (100, 32) # w H
@@ -14,10 +15,8 @@ def load_image( infilename ) :
     img = img[:, :, :3]
     return img
 
-def loadimgs(path='/content/nlp_keyword_bucket/train_1/',n = 0):
-    '''
-    path => Path of train directory or test directory
-    '''
+def loadimgs(path='/content/nlp_keyword_bucket/train_1/', val_list = None, test_list = None, n = 0, whitelist=["endwadde", "ebiwojjolo", "ebiwuka", "ebigimusa", "ensiringanyi", "munyeera", "ndwadde"]):
+    
     X=[]
     y = []
     cat_dict = {}
@@ -26,20 +25,38 @@ def loadimgs(path='/content/nlp_keyword_bucket/train_1/',n = 0):
     
     # we load every alphabet seperately so we can isolate them later
     for word in os.listdir(path):
+        if word not in whitelist:
+            continue
         print("loading word: " + word)
         word_dict[word] = curr_y
         word_path = os.path.join(path,word)
         cat_dict[curr_y] = word
         category_images=[]
+        if val_list:
+            val_category_images = []
+            y_val = []        
+        if test_list:
+            test_category_images = []
+            y_test = []
         
         # read all the images in the current category
         for filename in os.listdir(word_path):
             if filename.split(".")[1] != "png":
-                continue
+                continue            
             image_path = os.path.join(word_path, filename)
             image = load_image(image_path)
             if image.shape != (32,100,3):
               print(image.shape)
+            if val_list:
+                if image_path in val_list:
+                    val_category_images.append(image)
+                    y_val.append(curr_y)
+                    continue
+            if test_list:
+                if image_path in test_list:
+                    test_category_images.append(image)
+                    y_test.append(curr_y)
+                    continue
             category_images.append(image)
             y.append(curr_y)
         try:

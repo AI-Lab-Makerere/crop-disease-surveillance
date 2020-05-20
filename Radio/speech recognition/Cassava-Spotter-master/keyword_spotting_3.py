@@ -32,7 +32,9 @@ processor.convert_ogg2wav()
 # BEGINNING OF GENERATING SPECTROGRAM IMAGES FOR WAV FILES
 ######################################################################################################### 
 
-processor.generate_dir_spectograms()
+processor.generate_dir_spectrograms("data/nlp_keyword_bucket/train_1/", 
+            "data/nlp_keyword_bucket/val_1/",
+            "data/nlp_keyword_bucket/test_1/")
 
 #########################################################################################################
 # END OF GENERATING SPECTROGRAM IMAGES FOR WAV FILES
