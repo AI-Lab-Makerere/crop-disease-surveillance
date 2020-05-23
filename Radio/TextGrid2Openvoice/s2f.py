@@ -10,7 +10,7 @@ parser.add_argument('input_dir')
 #parser.add_argument('--output-audio-path', default='/home/sha3bola/repos/rcrops/segment_to_file_util/')
 #parser.add_argument('--output-csv-path', default='/home/sha3bola/repos/rcrops/segment_to_file_util/')
 parser.add_argument('--output-prefix', default='seg')
-Ramadan Kareem
+
 args = parser.parse_args()
 files_in_dir = os.listdir(args.input_dir)
 
@@ -25,7 +25,7 @@ for file_in_dir in files_in_dir:
     annotation_file_path = os.path.join(args.input_dir, file_in_dir.split(".")[0] + ".txt")
     main_audio_file = AudioSegment.from_mp3(audio_file_path)
 
-    with open(args.input_annotation, "rb") as f:
+    with open(annotation_file_path, "rb") as f:
         text = f.readlines()
     text = remove_empty_lines(text)
     main_annotation_file = TextGrid(text)
