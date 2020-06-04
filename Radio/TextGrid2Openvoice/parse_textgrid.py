@@ -14,9 +14,12 @@ def remove_empty_lines(text):
     assert(len(text)>0)
     assert(isinstance(text, list))
     text = [t.strip() for t in text]
+    if b"" in text:
+        text.remove(b"")
     if "" in text:
         text.remove("")
     return text
+
 
 class TextGrid(object):
     def __init__(self, text):
