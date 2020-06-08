@@ -22,6 +22,10 @@ files_in_dir = os.listdir(args.input_dir)
 if not os.path.exists(args.input_dir + "/segments/"):
     os.mkdir(args.input_dir + "/segments")
 
+
+if not os.path.exists(args.input_dir + "/JUNK_segments/"):
+    os.mkdir(args.input_dir + "/JUNK_segments")
+
 if os.path.exists(args.input_dir + "/" + "index" + ".csv"):
     os.remove(args.input_dir + "/" + "index" + ".csv")
 
@@ -58,9 +62,13 @@ for file_in_dir in files_in_dir:
         print(type(segment_xmax))
         print(segment_xmax)
         segment_audio = main_audio_file[segment_xmin:segment_xmax]
-        segment_audio_path = args.input_dir + "/" + "segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
-        segment_audio.export(segment_audio_path ,format="mp3")
         segment_text = segment_to_seperate["text"]
+        if segment_text == "JUNK":
+            segment_audio_path = args.input_dir + "/" + "JUNK_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+        else:    
+            segment_audio_path = args.input_dir + "/" + "segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+        segment_audio.export(segment_audio_path ,format="mp3")
+
         segment_files_list.append( (segment_audio_path, segment_text, total_segment_duration) ) 
 
     csv_file_path = args.input_dir + "/" + "index" + ".csv"
