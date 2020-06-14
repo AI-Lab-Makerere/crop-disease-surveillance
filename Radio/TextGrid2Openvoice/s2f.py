@@ -26,15 +26,38 @@ if not os.path.exists(args.input_dir + "/segments/"):
 if not os.path.exists(args.input_dir + "/JUNK_segments/"):
     os.mkdir(args.input_dir + "/JUNK_segments")
 
+if not os.path.exists(args.input_dir + "/MUSIC_segments/"):
+    os.mkdir(args.input_dir + "/MUSIC_segments")
+
+if not os.path.exists(args.input_dir + "/PHONE_segments/"):
+    os.mkdir(args.input_dir + "/PHONE_segments")
+
+if not os.path.exists(args.input_dir + "/INCOMPLETE_segments/"):
+    os.mkdir(args.input_dir + "/INCOMPLETE_segments")
+
+
+
+
 if os.path.exists(args.input_dir + "/" + "index" + ".csv"):
     os.remove(args.input_dir + "/" + "index" + ".csv")
 
 if os.path.exists(args.input_dir + "/" + "junk" + ".csv"):
     os.remove(args.input_dir + "/" + "junk" + ".csv")
 
+if os.path.exists(args.input_dir + "/" + "music" + ".csv"):
+    os.remove(args.input_dir + "/" + "music" + ".csv")
+
+if os.path.exists(args.input_dir + "/" + "phone" + ".csv"):
+    os.remove(args.input_dir + "/" + "phone" + ".csv")
+
+if os.path.exists(args.input_dir + "/" + "incomplete" + ".csv"):
+    os.remove(args.input_dir + "/" + "incomplete" + ".csv")
+
+
+
 for file_in_dir in files_in_dir:
 
-    if file_in_dir in ["segments"]:
+    if file_in_dir in ["segments", "JUNK_segments", "MUSIC_segments", "PHONE_segments", "INCOMPLETE_segments"]:
         continue        
 
     if file_in_dir.split(".")[1] not in ["ogg", "mp3", "wav"]:
@@ -57,32 +80,59 @@ for file_in_dir in files_in_dir:
         segment_xmin = float(segment_to_seperate["xmin"]) * 1000
         segment_xmax = float(segment_to_seperate["xmax"]) * 1000
         total_segment_duration = segment_xmax - segment_xmin
-        print(type(segment_xmin))
-        print(segment_xmin)
-        print(type(segment_xmax))
-        print(segment_xmax)
+        #print(type(segment_xmin))
+        #print(segment_xmin)
+        #print(type(segment_xmax))
+        #print(segment_xmax)
         segment_audio = main_audio_file[segment_xmin:segment_xmax]
         segment_text = segment_to_seperate["text"]
-        if segment_text == "JUNK":
+        if segment_text.lower() == "junk." or segment_text.lower() == "junk":
             segment_audio_path = args.input_dir + "/" + "JUNK_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
-        else:    
+        elif segment_text.lower() == "music." or segment_text.lower() == "music":
+            segment_audio_path = args.input_dir + "/" + "MUSIC_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+        elif segment_text.lower() == "phone call." or segment_text.lower() == "phone call" or segment_text.lower() == "phone speech." or segment_text.lower() == "phone speech":
+            segment_audio_path = args.input_dir + "/" + "PHONE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+        elif total_segment_duration >= 30000:
+            segment_audio_path = args.input_dir + "/" + "INCOMPLETE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+        else:
             segment_audio_path = args.input_dir + "/" + "segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+
         segment_audio.export(segment_audio_path ,format="mp3")
 
         segment_files_list.append( (segment_audio_path, segment_text, total_segment_duration) ) 
 
     csv_file_path = args.input_dir + "/" + "index" + ".csv"
     #with open(csv_file_path, "a") as csv_fd:
-    csv_fd = open(csv_file_path, "a")
+    csv_fd = open(csv_file_path, "a+")
     jk_csv_file_path = args.input_dir + "/" + "junk" + ".csv"
-    jk_fd =  open(jk_csv_file_path, "a")
+    jk_fd =  open(jk_csv_file_path, "a+")
+    music_csv_file_path = args.input_dir + "/" + "music" + ".csv"
+    music_fd = open(music_csv_file_path, "a+")
+    phone_csv_file_path = args.input_dir + "/" + "phone" + ".csv"
+    phone_fd = open(phone_csv_file_path, "a+")
+    incomplete_csv_file_path = args.input_dir + "/" + "incomplete" + ".csv"
+    incomplete_fd = open(incomplete_csv_file_path, "a+")
+    
     csvwriter = csv.writer(csv_fd,
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     jk_csvwriter = csv.writer(jk_fd,
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    music_csvwriter = csv.writer(music_fd,
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    phone_csvwriter = csv.writer(phone_fd,
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    incomplete_csvwriter = csv.writer(incomplete_fd,
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+
     for path, text, duration in segment_files_list:
-        if text == "JUNK":
+        if text.lower() == "junk" or text.lower() == "junk.":
             jk_csvwriter.writerow([str(path), str(text),  str(duration)])
+        elif text.lower() == "music." or text.lower() == "music":
+            music_csvwriter.writerow([str(path), str(text),  str(duration)])
+        elif text.lower() == "phone call." or text.lower() == "phone call" or text.lower() == "phone speech." or text.lower() == "phone speech":
+            phone_csvwriter.writerow([str(path), str(text),  str(duration)])
+        elif total_segment_duration >= 30000:
+            incomplete_csvwriter.writerow([str(path), str(text),  str(duration)])
         else:
             csvwriter.writerow([str(path), str(text),  str(duration)])
 
