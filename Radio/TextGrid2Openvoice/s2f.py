@@ -69,12 +69,18 @@ for file_in_dir in files_in_dir:
 
     audio_file_path = os.path.join(args.input_dir, file_in_dir)
     annotation_file_path = os.path.join(args.input_dir, file_in_dir.split(".")[0] + ".TextGrid")
-    if audio_file_path.split(".")[-1] == "mp3":
-        main_audio_file = AudioSegment.from_mp3(audio_file_path)
-    elif audio_file_path.split(".")[-1] == "wav":
-        main_audio_file = AudioSegment.from_wav(audio_file_path)
-    elif audio_file_path.split(".")[-1] == "ogg":
-        main_audio_file = AudioSegment.from_ogg(audio_file_path)
+    #print(audio_file_path.split(".")[-1])
+    try:    
+        if audio_file_path.split(".")[-1] == "mp3":
+            main_audio_file = AudioSegment.from_mp3(audio_file_path)
+        elif audio_file_path.split(".")[-1] == "wav":
+            main_audio_file = AudioSegment.from_wav(audio_file_path)
+        elif audio_file_path.split(".")[-1] == "ogg":
+            main_audio_file = AudioSegment.from_ogg(audio_file_path)
+    except:
+        with open("errors.txt", "a+") as err_fd:
+            err_fd.write(annotation_file_path)
+        continue
         
     with open(annotation_file_path, "rb") as f:
         text = f.readlines()
