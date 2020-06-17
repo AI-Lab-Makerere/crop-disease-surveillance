@@ -69,8 +69,13 @@ for file_in_dir in files_in_dir:
 
     audio_file_path = os.path.join(args.input_dir, file_in_dir)
     annotation_file_path = os.path.join(args.input_dir, file_in_dir.split(".")[0] + ".TextGrid")
-    main_audio_file = AudioSegment.from_mp3(audio_file_path)
-
+    if audio_file_path.split(".")[-1] == "mp3":
+        main_audio_file = AudioSegment.from_mp3(audio_file_path)
+    elif audio_file_path.split(".")[-1] == "wav":
+        main_audio_file = AudioSegment.from_wav(audio_file_path)
+    elif audio_file_path.split(".")[-1] == "ogg":
+        main_audio_file = AudioSegment.from_ogg(audio_file_path)
+        
     with open(annotation_file_path, "rb") as f:
         text = f.readlines()
     text = remove_empty_lines(text)
@@ -97,19 +102,19 @@ for file_in_dir in files_in_dir:
         segment_audio = main_audio_file[segment_xmin:segment_xmax]
         segment_text = segment_to_seperate["text"]
         if segment_text.lower() == "junk." or segment_text.lower() == "junk":
-            segment_audio_path = args.input_dir + "/" + "JUNK_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio_path = args.input_dir + "/" + "JUNK_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
         elif segment_text.lower() == "music." or segment_text.lower() == "music":
-            segment_audio_path = args.input_dir + "/" + "MUSIC_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio_path = args.input_dir + "/" + "MUSIC_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
         elif segment_text.lower() == "phone call." or segment_text.lower() == "phone call" or segment_text.lower() == "phone speech." or segment_text.lower() == "phone speech":
-            segment_audio_path = args.input_dir + "/" + "PHONE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio_path = args.input_dir + "/" + "PHONE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
         elif total_segment_duration >= 30000 or segment_text.lower().rstrip().lstrip() == "":
-            segment_audio_path = args.input_dir + "/" + "INCOMPLETE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio_path = args.input_dir + "/" + "INCOMPLETE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
         elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
-            segment_audio_path = args.input_dir + "/" + "OVERLAPPING_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio_path = args.input_dir + "/" + "OVERLAPPING_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
         else:
-            segment_audio_path = args.input_dir + "/" + "segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio_path = args.input_dir + "/" + "segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
 
-        segment_audio.export(segment_audio_path ,format="mp3")
+        segment_audio.export(segment_audio_path ,format="wav")
 
         segment_files_list.append( (segment_audio_path, segment_text, total_segment_duration) ) 
 
