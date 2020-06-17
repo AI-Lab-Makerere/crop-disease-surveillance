@@ -90,7 +90,7 @@ for file_in_dir in files_in_dir:
         main_annotation_file = TextGrid(text)
         f.close()
 
-    except UnicodeDecodeError:
+    except:
         err_fd = open("errors.txt", "a+")
         err_fd.write(annotation_file_path)
         err_fd.close()        
