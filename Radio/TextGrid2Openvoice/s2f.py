@@ -78,19 +78,22 @@ for file_in_dir in files_in_dir:
         elif audio_file_path.split(".")[-1] == "ogg":
             main_audio_file = AudioSegment.from_ogg(audio_file_path)
     except:
-        with open("errors.txt", "a+") as err_fd:
-            err_fd.write(annotation_file_path)
+        err_fd =  open("errors.txt", "a+")
+        err_fd.write(annotation_file_path)
+        err_fd.close()        
         continue
     
     try:     
-        with open(annotation_file_path, "rb") as f:
-            text = f.readlines()
+        f = open(annotation_file_path, "rb")
+        text = f.readlines()
         text = remove_empty_lines(text)
-       
         main_annotation_file = TextGrid(text)
+        f.close()
+
     except UnicodeDecodeError:
-        with open("errors.txt", "a+") as err_fd:
-            err_fd.write(annotation_file_path)
+        err_fd = open("errors.txt", "a+")
+        err_fd.write(annotation_file_path)
+        err_fd.close()        
         continue
             
         
