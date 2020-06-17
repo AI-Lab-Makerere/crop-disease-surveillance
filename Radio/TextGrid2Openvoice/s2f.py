@@ -141,7 +141,7 @@ for file_in_dir in files_in_dir:
             music_csvwriter.writerow([str(path), str(text),  str(duration)])
         elif text.lower() == "phone call." or text.lower() == "phone call" or text.lower() == "phone speech." or text.lower() == "phone speech":
             phone_csvwriter.writerow([str(path), str(text),  str(duration)])
-        elif total_segment_duration >= 30000 or text.lower().rstrip().lstrip() == "" or :
+        elif total_segment_duration >= 30000 or text.lower().rstrip().lstrip() == "":
             incomplete_csvwriter.writerow([str(path), str(text),  str(duration)])
         elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
             overlapping_csvwriter.writerow([str(path), str(text),  str(duration)])
