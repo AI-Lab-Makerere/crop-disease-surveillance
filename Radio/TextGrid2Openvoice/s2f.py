@@ -81,11 +81,12 @@ for file_in_dir in files_in_dir:
         with open("errors.txt", "a+") as err_fd:
             err_fd.write(annotation_file_path)
         continue
-        
-    with open(annotation_file_path, "rb") as f:
-        text = f.readlines()
-    text = remove_empty_lines(text)
-    try:    
+    
+    try:     
+        with open(annotation_file_path, "rb") as f:
+            text = f.readlines()
+        text = remove_empty_lines(text)
+       
         main_annotation_file = TextGrid(text)
     except UnicodeDecodeError:
         with open("errors.txt", "a+") as err_fd:
