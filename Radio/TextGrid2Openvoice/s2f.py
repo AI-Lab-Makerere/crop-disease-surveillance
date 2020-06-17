@@ -69,7 +69,7 @@ for file_in_dir in files_in_dir:
 
     audio_file_path = os.path.join(args.input_dir, file_in_dir)
     annotation_file_path = os.path.join(args.input_dir, file_in_dir.split(".")[0] + ".TextGrid")
-    print(audio_file_path.split(".")[-1])
+    #print(audio_file_path.split(".")[-1])
     try:    
         if audio_file_path.split(".")[-1] == "mp3":
             main_audio_file = AudioSegment.from_mp3(audio_file_path)
