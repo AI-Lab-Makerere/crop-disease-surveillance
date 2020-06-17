@@ -35,6 +35,8 @@ if not os.path.exists(args.input_dir + "/PHONE_segments/"):
 if not os.path.exists(args.input_dir + "/INCOMPLETE_segments/"):
     os.mkdir(args.input_dir + "/INCOMPLETE_segments")
 
+if not os.path.exists(args.input_dir + "/OVERLAPPING_segments/"):
+    os.mkdir(args.input_dir + "/OVERLAPPING_segments")
 
 
 
@@ -53,11 +55,13 @@ if os.path.exists(args.input_dir + "/" + "phone" + ".csv"):
 if os.path.exists(args.input_dir + "/" + "incomplete" + ".csv"):
     os.remove(args.input_dir + "/" + "incomplete" + ".csv")
 
+if os.path.exists(args.input_dir + "/" + "overlapping" + ".csv"):
+    os.remove(args.input_dir + "/" + "overlapping" + ".csv")
 
 
 for file_in_dir in files_in_dir:
 
-    if file_in_dir in ["segments", "JUNK_segments", "MUSIC_segments", "PHONE_segments", "INCOMPLETE_segments"]:
+    if file_in_dir in ["segments", "JUNK_segments", "MUSIC_segments", "PHONE_segments", "INCOMPLETE_segments", "OVERLAPPING_segments"]:
         continue        
 
     if file_in_dir.split(".")[1] not in ["ogg", "mp3", "wav"]:
@@ -92,8 +96,10 @@ for file_in_dir in files_in_dir:
             segment_audio_path = args.input_dir + "/" + "MUSIC_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
         elif segment_text.lower() == "phone call." or segment_text.lower() == "phone call" or segment_text.lower() == "phone speech." or segment_text.lower() == "phone speech":
             segment_audio_path = args.input_dir + "/" + "PHONE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
-        elif total_segment_duration >= 30000:
+        elif total_segment_duration >= 30000 or segment_text.lower().rstrip().lstrip() == "":
             segment_audio_path = args.input_dir + "/" + "INCOMPLETE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+        elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
+            segment_audio_path = args.input_dir + "/" + "OVERLAPPING_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
         else:
             segment_audio_path = args.input_dir + "/" + "segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
 
@@ -112,6 +118,8 @@ for file_in_dir in files_in_dir:
     phone_fd = open(phone_csv_file_path, "a+")
     incomplete_csv_file_path = args.input_dir + "/" + "incomplete" + ".csv"
     incomplete_fd = open(incomplete_csv_file_path, "a+")
+    overlapping_csv_file_path = args.input_dir + "/" + "overlapping" + ".csv"
+    overlapping_fd = open(overlapping_csv_file_path, "a+")
     
     csvwriter = csv.writer(csv_fd,
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
@@ -123,7 +131,9 @@ for file_in_dir in files_in_dir:
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     incomplete_csvwriter = csv.writer(incomplete_fd,
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-
+    overlapping_csvwriter = csv.writer(overlapping_fd,
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    
     for path, text, duration in segment_files_list:
         if text.lower() == "junk" or text.lower() == "junk.":
             jk_csvwriter.writerow([str(path), str(text),  str(duration)])
@@ -131,8 +141,10 @@ for file_in_dir in files_in_dir:
             music_csvwriter.writerow([str(path), str(text),  str(duration)])
         elif text.lower() == "phone call." or text.lower() == "phone call" or text.lower() == "phone speech." or text.lower() == "phone speech":
             phone_csvwriter.writerow([str(path), str(text),  str(duration)])
-        elif total_segment_duration >= 30000:
+        elif total_segment_duration >= 30000 or text.lower().rstrip().lstrip() == "" or :
             incomplete_csvwriter.writerow([str(path), str(text),  str(duration)])
+        elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
+            overlapping_csvwriter.writerow([str(path), str(text),  str(duration)])
         else:
             csvwriter.writerow([str(path), str(text),  str(duration)])
 
