@@ -19,24 +19,24 @@ args = parser.parse_args()
 files_in_dir = os.listdir(args.input_dir)
 
 
-if not os.path.exists(args.input_dir + "/segments/"):
-    os.mkdir(args.input_dir + "/segments")
+if not os.path.exists(args.input_dir + "/clips/"):
+    os.mkdir(args.input_dir + "/clips")
 
 
-if not os.path.exists(args.input_dir + "/JUNK_segments/"):
-    os.mkdir(args.input_dir + "/JUNK_segments")
+if not os.path.exists(args.input_dir + "/JUNK_clips/"):
+    os.mkdir(args.input_dir + "/JUNK_clips")
 
-if not os.path.exists(args.input_dir + "/MUSIC_segments/"):
-    os.mkdir(args.input_dir + "/MUSIC_segments")
+if not os.path.exists(args.input_dir + "/MUSIC_clips/"):
+    os.mkdir(args.input_dir + "/MUSIC_clips")
 
-if not os.path.exists(args.input_dir + "/PHONE_segments/"):
-    os.mkdir(args.input_dir + "/PHONE_segments")
+if not os.path.exists(args.input_dir + "/PHONE_clips/"):
+    os.mkdir(args.input_dir + "/PHONE_clips")
 
-if not os.path.exists(args.input_dir + "/INCOMPLETE_segments/"):
-    os.mkdir(args.input_dir + "/INCOMPLETE_segments")
+if not os.path.exists(args.input_dir + "/INCOMPLETE_clips/"):
+    os.mkdir(args.input_dir + "/INCOMPLETE_clips")
 
-if not os.path.exists(args.input_dir + "/OVERLAPPING_segments/"):
-    os.mkdir(args.input_dir + "/OVERLAPPING_segments")
+if not os.path.exists(args.input_dir + "/OVERLAPPING_clips/"):
+    os.mkdir(args.input_dir + "/OVERLAPPING_clips")
 
 
 
@@ -61,7 +61,7 @@ if os.path.exists(args.input_dir + "/" + "overlapping" + ".csv"):
 
 for file_in_dir in files_in_dir:
 
-    if file_in_dir in ["segments", "JUNK_segments", "MUSIC_segments", "PHONE_segments", "INCOMPLETE_segments", "OVERLAPPING_segments"]:
+    if file_in_dir in ["clips", "JUNK_clips", "MUSIC_clips", "PHONE_clips", "INCOMPLETE_clips", "OVERLAPPING_clips"]:
         continue        
 
     if file_in_dir.split(".")[1] not in ["ogg", "mp3", "wav"]:
@@ -111,20 +111,31 @@ for file_in_dir in files_in_dir:
         #print(segment_xmax)
         segment_audio = main_audio_file[segment_xmin:segment_xmax]
         segment_text = segment_to_seperate["text"]
-        if segment_text.lower() == "junk." or segment_text.lower() == "junk":
-            segment_audio_path = args.input_dir + "/" + "JUNK_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
-        elif segment_text.lower() == "music." or segment_text.lower() == "music":
-            segment_audio_path = args.input_dir + "/" + "MUSIC_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
-        elif segment_text.lower() == "phone call." or segment_text.lower() == "phone call" or segment_text.lower() == "phone speech." or segment_text.lower() == "phone speech":
-            segment_audio_path = args.input_dir + "/" + "PHONE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
-        elif total_segment_duration >= 30000 or segment_text.lower().rstrip().lstrip() == "":
-            segment_audio_path = args.input_dir + "/" + "INCOMPLETE_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
-        elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
-            segment_audio_path = args.input_dir + "/" + "OVERLAPPING_segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
-        else:
-            segment_audio_path = args.input_dir + "/" + "segments" + "/" + audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
 
-        segment_audio.export(segment_audio_path ,format="wav")
+        if segment_text.lower() == "junk." or segment_text.lower() == "junk":
+            segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
+            segment_audio.export(args.input_dir + "/" + "JUNK_clips" + "/" + segment_audio_path ,format="wav")        
+
+        elif segment_text.lower() == "music." or segment_text.lower() == "music":
+            segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
+            segment_audio.export(args.input_dir + "/" + "MUSIC_clips" + "/" + segment_audio_path ,format="wav")        
+
+        elif segment_text.lower() == "phone call." or segment_text.lower() == "phone call" or segment_text.lower() == "phone speech." or segment_text.lower() == "phone speech":
+            segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
+            segment_audio.export(args.input_dir + "/" + "PHONE_clips" + "/" +  segment_audio_path ,format="wav")        
+
+        elif total_segment_duration >= 30000 or segment_text.lower().rstrip().lstrip() == "":
+            segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
+            segment_audio.export(args.input_dir + "/" + "INCOMPLETE_clips" + "/" +segment_audio_path ,format="wav")        
+
+        elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
+            segment_audio_path = audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
+            segment_audio.export(args.input_dir + "/" + "OVERLAPPING_clips" + "/" + segment_audio_path ,format="wav")
+        
+        else:
+            segment_audio_path = audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".wav"
+            segment_audio.export(args.input_dir + "/" + "clips" + "/" + segment_audio_path ,format="wav")
+
 
         segment_files_list.append( (segment_audio_path, segment_text, total_segment_duration) ) 
 
