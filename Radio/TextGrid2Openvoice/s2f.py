@@ -114,26 +114,35 @@ for file_in_dir in files_in_dir:
 
         if segment_text.lower() == "junk." or segment_text.lower() == "junk":
             segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio = segment_audio.set_channels(1)
             segment_audio.export(args.input_dir + "/" + "JUNK_clips" + "/" + segment_audio_path ,format="mp3")        
 
         elif segment_text.lower() == "music." or segment_text.lower() == "music":
             segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio = segment_audio.set_channels(1)
             segment_audio.export(args.input_dir + "/" + "MUSIC_clips" + "/" + segment_audio_path ,format="mp3")        
 
         elif segment_text.lower() == "phone call." or segment_text.lower() == "phone call" or segment_text.lower() == "phone speech." or segment_text.lower() == "phone speech":
             segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio = segment_audio.set_channels(1)
             segment_audio.export(args.input_dir + "/" + "PHONE_clips" + "/" +  segment_audio_path ,format="mp3")        
+
 
         elif total_segment_duration >= 30000 or segment_text.lower().rstrip().lstrip() == "":
             segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio = segment_audio.set_channels(1)
             segment_audio.export(args.input_dir + "/" + "INCOMPLETE_clips" + "/" +segment_audio_path ,format="mp3")        
+
 
         elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
             segment_audio_path = audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio = segment_audio.set_channels(1)
             segment_audio.export(args.input_dir + "/" + "OVERLAPPING_clips" + "/" + segment_audio_path ,format="mp3")
+
         
         else:
             segment_audio_path = audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
+            segment_audio = segment_audio.set_channels(1)
             segment_audio.export(args.input_dir + "/" + "clips" + "/" + segment_audio_path ,format="mp3")
 
 
