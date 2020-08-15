@@ -176,16 +176,18 @@ for file_in_dir in files_in_dir:
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     
     for path, text, duration in segment_files_list:
-        if text.lower() == "junk" or text.lower() == "junk.":
+        if text.lower().strip(" .!") in ["junk"]:
             jk_csvwriter.writerow([str(path), str(text),  str(duration)])
-        elif text.lower() == "music." or text.lower() == "music":
+        elif text.lower().strip(" .!") in ["music"]:
             music_csvwriter.writerow([str(path), str(text),  str(duration)])
-        elif text.lower() == "phone call." or text.lower() == "phone call" or text.lower() == "phone speech." or text.lower() == "phone speech":
+        elif text.lower().strip(" .!") in ["phone call", "phone speech"]:
             phone_csvwriter.writerow([str(path), str(text),  str(duration)])
         elif total_segment_duration >= 30000 or text.lower().rstrip().lstrip() == "":
             incomplete_csvwriter.writerow([str(path), str(text),  str(duration)])
-        elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
+        elif segment_text.lower().strip(" .!") in ["overlap", "overlapping"]:
             overlapping_csvwriter.writerow([str(path), str(text),  str(duration)])
+        elif segment_text.lower().strip(" .!") in ["advert", "radio jingle", "phone contact"]:
+            pass
         else:
             csvwriter.writerow([str(path), str(text),  str(duration)])
 
