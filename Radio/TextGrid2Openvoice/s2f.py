@@ -129,10 +129,7 @@ for file_in_dir in files_in_dir:
 
 
         elif total_segment_duration >= 30000 or segment_text.lower().rstrip().lstrip() == "":
-            segment_audio_path =  audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
-            segment_audio = segment_audio.set_channels(1)
-            segment_audio.export(args.input_dir + "/" + "INCOMPLETE_clips" + "/" +segment_audio_path ,format="mp3")        
-
+            pass
 
         elif segment_text.lower() == "overlap." or segment_text.lower() == "overlapping." or segment_text.lower() == "overlap" or segment_text.lower() == "overlapping":
             segment_audio_path = audio_file_path.split(".")[0].split("/")[-1]  + args.output_prefix + str(i) + ".mp3"
@@ -157,8 +154,8 @@ for file_in_dir in files_in_dir:
     music_fd = open(music_csv_file_path, "a+")
     phone_csv_file_path = args.input_dir + "/" + "phone" + ".csv"
     phone_fd = open(phone_csv_file_path, "a+")
-    incomplete_csv_file_path = args.input_dir + "/" + "incomplete" + ".csv"
-    incomplete_fd = open(incomplete_csv_file_path, "a+")
+    #incomplete_csv_file_path = args.input_dir + "/" + "incomplete" + ".csv"
+    #incomplete_fd = open(incomplete_csv_file_path, "a+")
     overlapping_csv_file_path = args.input_dir + "/" + "overlapping" + ".csv"
     overlapping_fd = open(overlapping_csv_file_path, "a+")
     
@@ -170,8 +167,8 @@ for file_in_dir in files_in_dir:
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     phone_csvwriter = csv.writer(phone_fd,
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    incomplete_csvwriter = csv.writer(incomplete_fd,
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    #incomplete_csvwriter = csv.writer(incomplete_fd,
+    #                        quotechar='|', quoting=csv.QUOTE_MINIMAL)
     overlapping_csvwriter = csv.writer(overlapping_fd,
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     
@@ -183,7 +180,7 @@ for file_in_dir in files_in_dir:
         elif text.lower().strip(" .!") in ["phone call", "phone speech"]:
             phone_csvwriter.writerow([str(path), str(text),  str(duration)])
         elif total_segment_duration >= 30000 or text.lower().rstrip().lstrip() == "":
-            incomplete_csvwriter.writerow([str(path), str(text),  str(duration)])
+            pass
         elif segment_text.lower().strip(" .!") in ["overlap", "overlapping"]:
             overlapping_csvwriter.writerow([str(path), str(text),  str(duration)])
         elif segment_text.lower().strip(" .!") in ["advert", "radio jingle", "phone contact"]:
